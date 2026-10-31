@@ -1,0 +1,10 @@
+{
+  "questions": [
+    {"problem_slug": "fake-hash-lookup", "title": "Fake Hash Lookup", "difficulty": "Easy", "topics": ["Array", "Hash Table"]},
+    {"problem_slug": "fake-grid-paths", "title": "Fake Grid Paths", "difficulty": "Medium", "topics": ["Dynamic Programming", "Matrix"]},
+    {"problem_slug": "fake-window-stack", "title": "Fake Window Stack", "difficulty": "Hard", "topics": ["Sliding Window", "Stack"]},
+    {"problem_slug": "fake-plain-array", "title": "Fake Plain Array", "difficulty": "Easy", "topics": ["Array", "Sorting"]},
+    {"problem_slug": "fake-hash-lookup", "title": "Fake Hash Lookup (duplicate)", "difficulty": "Easy", "topics": []},
+    {"problem_slug": "two-sum", "title": "Synthetic Core Entry", "difficulty": "Easy", "topics": ["Array"]}
+  ]
+}

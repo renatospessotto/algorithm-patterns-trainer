@@ -1,0 +1,3 @@
+Rating	ID	Title	Title ZH	Title Slug	Contest Slug	Problem Index
+1500.123	9001	Fake Grid Paths	-	fake-grid-paths	fake-contest	Q2
+not-a-number	9002	Broken	-	fake-window-stack	fake-contest	Q3

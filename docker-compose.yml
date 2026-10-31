@@ -1,0 +1,44 @@
+# Configuração via variáveis de ambiente (ver .env.example). Todo default é
+# o valor usado desde sempre, então quem já tem o volume `pgdata` criado não
+# precisa de .env nenhum -- o Postgres só lê POSTGRES_* na primeira
+# inicialização do volume, e trocar a senha depois quebraria a conexão.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app_leetcode}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_leetcode}
+      POSTGRES_DB: ${POSTGRES_DB:-app_leetcode}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app_leetcode}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Exposto só em 127.0.0.1 (nunca na rede), pra debugar com um cliente tipo
+    # DBeaver. O lado direito fica 5432: é a porta do Postgres dentro do
+    # container.
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-5435}:5432"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-app_leetcode}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-app_leetcode}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-app_leetcode}
+      # Decide "que dia é hoje" (avanço de dia, heatmap, "resolvidos hoje").
+      APP_TIMEZONE: ${APP_TIMEZONE:-America/Sao_Paulo}
+      # Alinha logs e qualquer coisa da JVM/SO que não passe por AppClock.
+      TZ: ${APP_TIMEZONE:-America/Sao_Paulo}
+    ports:
+      - "${APP_PORT:-8080}:8080"
+
+volumes:
+  pgdata:

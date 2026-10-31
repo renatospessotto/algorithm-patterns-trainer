@@ -1,0 +1,52 @@
+<div class="explorar">
+  <header>
+    <h1>Explorar</h1>
+    <p class="subtitle">Quando a fila principal acabar, puxe um problema aleatório do pool por padrão.</p>
+  </header>
+
+  <div class="pattern-grid">
+    <button
+      type="button"
+      class="pattern-chip"
+      [class.pattern-chip--selected]="selectedPatternSlug === null"
+      (click)="selectPattern(null)"
+    >
+      <span class="pattern-chip__name">Qualquer padrão</span>
+    </button>
+
+    <button
+      type="button"
+      class="pattern-chip"
+      *ngFor="let p of patterns"
+      [class.pattern-chip--selected]="selectedPatternSlug === p.slug"
+      (click)="selectPattern(p.slug)"
+    >
+      <span class="pattern-chip__name">{{ p.name }}</span>
+      <span class="pattern-chip__progress-track">
+        <span class="pattern-chip__progress-fill" [style.width.%]="progressPercent(p)"></span>
+      </span>
+      <span class="pattern-chip__meta">{{ p.coreSolved }}/{{ p.coreTotal }}</span>
+    </button>
+  </div>
+
+  <button mat-flat-button color="primary" class="draw-button" (click)="drawRandom()" [disabled]="searching">
+    <mat-icon>casino</mat-icon>
+    Me dá um exercício aleatório
+  </button>
+
+  <div *ngIf="searching" class="explorar__loading">
+    <mat-spinner diameter="28"></mat-spinner>
+  </div>
+
+  <app-attempt-card
+    *ngIf="suggestion && !searching"
+    [problem]="suggestion"
+    badgeLabel="Aleatório"
+    badgeIcon="casino"
+    (recorded)="onRecorded()"
+  ></app-attempt-card>
+
+  <p *ngIf="searchedOnce && !suggestion && !searching" class="empty-state">
+    Nenhum problema encontrado pra esse filtro.
+  </p>
+</div>

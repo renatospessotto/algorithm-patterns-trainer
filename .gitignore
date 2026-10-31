@@ -1,0 +1,24 @@
+# Dados: nada gerado pelo ETL e versionado (ver docs/etl.md)
+tools/etl/.cache/
+backend/src/main/resources/seed/*.json
+__pycache__/
+
+# Backend (Maven / Java)
+backend/target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Frontend (Angular / Node)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Env
+.env

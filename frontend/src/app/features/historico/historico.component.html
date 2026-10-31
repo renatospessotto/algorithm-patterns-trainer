@@ -1,0 +1,71 @@
+<div class="historico">
+  <h1>Histórico</h1>
+  <p class="historico__subtitle">Todos os exercícios que você já fez, com resultado e observações.</p>
+
+  <div class="historico__date-filter" *ngIf="dateFilter">
+    <span>Mostrando só o dia <strong>{{ dateFilter }}</strong></span>
+    <button mat-button (click)="clearDateFilter()">
+      <mat-icon>close</mat-icon>
+      Limpar
+    </button>
+  </div>
+
+  <div class="historico__filters" *ngIf="history.length">
+    <mat-chip-set>
+      <mat-chip
+        *ngFor="let label of ['Easy', 'Medium', 'Hard']"
+        [class.historico__chip--active]="difficultyFilter === label"
+        (click)="setFilter(label)"
+      >
+        {{ label }}
+      </mat-chip>
+    </mat-chip-set>
+  </div>
+
+  <div class="historico__loading" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+  </div>
+
+  <p class="historico__error" *ngIf="error">Não deu pra carregar o histórico agora.</p>
+
+  <p class="historico__empty" *ngIf="!loading && !error && history.length === 0">
+    Você ainda não registrou nenhuma tentativa.
+  </p>
+
+  <div class="historico__list" *ngIf="!loading && !error && filtered.length">
+    <mat-card class="historico__item" *ngFor="let item of filtered">
+      <div class="historico__item-header">
+        <a [href]="item.leetcodeUrl" target="_blank" rel="noopener" class="historico__title">
+          {{ item.problemTitle }}
+        </a>
+        <span class="difficulty-badge" [ngClass]="difficultyClass(item.difficultyLabel)">
+          {{ item.difficultyLabel }}
+        </span>
+      </div>
+
+      <div class="historico__meta">
+        <span class="historico__date">
+          <mat-icon aria-hidden="true">event</mat-icon>
+          {{ item.attemptedAt | date: 'dd/MM/yyyy HH:mm' }}
+        </span>
+        <span class="historico__duration">
+          <mat-icon aria-hidden="true">timer</mat-icon>
+          {{ formatDuration(item.durationSeconds) }}
+        </span>
+        <span class="historico__result" [ngClass]="resultClass(item.result)">
+          {{ resultLabel(item.result) }}
+        </span>
+        <span class="historico__confidence" *ngIf="item.confidence">
+          <mat-icon aria-hidden="true">star</mat-icon>
+          confiança {{ item.confidence }}/5
+        </span>
+      </div>
+
+      <app-clamped-note *ngIf="item.note" [note]="item.note" class="historico__note"></app-clamped-note>
+    </mat-card>
+  </div>
+
+  <p class="historico__empty" *ngIf="!loading && !error && history.length > 0 && filtered.length === 0">
+    Nenhum exercício encontrado com esse filtro.
+  </p>
+</div>

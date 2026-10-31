@@ -1,0 +1,110 @@
+<div class="stats">
+  <h1>Estatísticas</h1>
+
+  <div class="tiles" *ngIf="stats">
+    <div class="tile">
+      <mat-icon>checklist</mat-icon>
+      <div>
+        <p class="tile__value">{{ stats.totalAttempts }}</p>
+        <p class="tile__label">Tentativas registradas</p>
+      </div>
+    </div>
+    <div class="tile">
+      <mat-icon>local_fire_department</mat-icon>
+      <div>
+        <p class="tile__value">{{ currentStreak }}</p>
+        <p class="tile__label">Dias seguidos (atual)</p>
+      </div>
+    </div>
+    <div class="tile">
+      <mat-icon>emoji_events</mat-icon>
+      <div>
+        <p class="tile__value">{{ bestStreak }}</p>
+        <p class="tile__label">Recorde de sequência</p>
+      </div>
+    </div>
+  </div>
+
+  <mat-card *ngIf="stats">
+    <mat-card-header>
+      <mat-card-title>Tempo médio por dificuldade</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="difficulty-bars">
+        <div class="difficulty-bar" *ngFor="let key of difficultyKeys">
+          <span class="difficulty-bar__label">{{ key }}</span>
+          <span class="difficulty-bar__value">
+            {{ stats.avgDurationSecondsByDifficulty[key] ? (stats.avgDurationSecondsByDifficulty[key] | number: '1.0-0') + 's' : '—' }}
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Progresso por padrão</mat-card-title>
+      <mat-card-subtitle>Ordenado do ponto mais fraco pro mais forte (EMA de qualidade)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="pattern-row" *ngFor="let p of sortedPatterns()">
+        <div class="pattern-row__header">
+          <span class="pattern-row__name">{{ p.name }}</span>
+          <span class="pattern-row__meta">{{ p.coreSolved }}/{{ p.coreTotal }} core</span>
+        </div>
+        <div class="pattern-row__track">
+          <span
+            class="pattern-row__fill"
+            [ngClass]="strengthClass(p)"
+            [style.width.%]="progressPercent(p)"
+          ></span>
+        </div>
+        <span class="pattern-row__ema" *ngIf="p.avgEmaQuality !== null">
+          EMA {{ p.avgEmaQuality | number: '1.2-2' }}
+        </span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="stats">
+    <mat-card-header>
+      <mat-card-title>Consistência</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="heatmap" *ngIf="heatmapWeeks.length">
+        <div class="heatmap__months">
+          <span
+            *ngFor="let m of monthLabels"
+            class="heatmap__month"
+            [style.grid-column]="m.weekIndex + 1"
+          >
+            {{ m.label }}
+          </span>
+        </div>
+        <div class="heatmap__grid">
+          <div class="heatmap__week" *ngFor="let week of heatmapWeeks">
+            <div
+              *ngFor="let day of week.days"
+              class="heatmap__cell"
+              [class.heatmap__cell--empty]="day.date === null"
+              [class.heatmap__cell--clickable]="day.date && day.count > 0"
+              [attr.data-level]="day.level"
+              [matTooltip]="day.date ? (day.count + ' em ' + day.date) : ''"
+              (click)="openDay(day)"
+            ></div>
+          </div>
+        </div>
+        <div class="heatmap__legend">
+          <span>Menos</span>
+          <span class="heatmap__cell" data-level="0"></span>
+          <span class="heatmap__cell" data-level="1"></span>
+          <span class="heatmap__cell" data-level="2"></span>
+          <span class="heatmap__cell" data-level="3"></span>
+          <span class="heatmap__cell" data-level="4"></span>
+          <span>Mais</span>
+        </div>
+      </div>
+      <p *ngIf="stats && stats.heatmap.length === 0">Ainda sem sessões registradas.</p>
+    </mat-card-content>
+  </mat-card>
+</div>

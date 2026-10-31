@@ -1,0 +1,56 @@
+<div class="leitura">
+  <header>
+    <h1>Leitura</h1>
+    <p class="subtitle">
+      Papers acadêmicos recentes (~3 anos), ordenados por número de citações como proxy de
+      "bem-sucedido" — <strong>não é uma lista de premiados</strong>, é o que a comunidade mais vem citando.
+    </p>
+  </header>
+
+  <div class="topic-chips">
+    <button
+      type="button"
+      class="topic-chip"
+      [class.topic-chip--selected]="selectedTopic === null"
+      (click)="selectTopic(null)"
+    >
+      Todos os temas
+    </button>
+    <button
+      type="button"
+      class="topic-chip"
+      *ngFor="let t of topicOptions"
+      [class.topic-chip--selected]="selectedTopic === t"
+      (click)="selectTopic(t)"
+    >
+      {{ t }}
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="leitura__loading">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <div class="leitura__list" *ngIf="!loading">
+    <mat-card *ngFor="let paper of papers" class="paper-card">
+      <mat-card-content>
+        <div class="paper-card__meta">
+          <span class="badge" *ngIf="paper.venue">{{ paper.venue }}</span>
+          <span class="badge badge--muted" *ngIf="paper.publicationYear">{{ paper.publicationYear }}</span>
+          <span class="badge badge--citations" *ngIf="paper.citationCount !== null">
+            <mat-icon>format_quote</mat-icon>
+            {{ paper.citationCount }} citações
+          </span>
+        </div>
+        <h2 class="paper-card__title">
+          <a [href]="paper.url" target="_blank" rel="noopener">{{ paper.title }}</a>
+        </h2>
+        <p class="paper-card__authors" *ngIf="paper.authors">{{ paper.authors }}</p>
+      </mat-card-content>
+    </mat-card>
+    <p *ngIf="papers.length === 0" class="empty-state">
+      Nenhum paper em cache pra esse tema ainda — abra a tela de novo em alguns segundos (a
+      primeira busca leva um instante).
+    </p>
+  </div>
+</div>

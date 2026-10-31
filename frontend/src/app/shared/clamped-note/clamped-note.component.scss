@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.clamped-note {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin: var(--space-2) 0 0;
+  word-break: break-word;
+
+  &--clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.clamped-note__toggle {
+  margin-top: -0.25rem;
+  font-size: 0.8rem;
+  min-width: 0;
+  padding: 0 var(--space-2);
+}

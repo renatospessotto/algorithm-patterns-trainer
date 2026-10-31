@@ -1,0 +1,11 @@
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &__display {
+    font-size: 2rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+}

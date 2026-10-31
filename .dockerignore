@@ -1,0 +1,9 @@
+frontend/node_modules
+frontend/dist
+frontend/.angular
+backend/target
+tools/etl/.cache
+.git
+backend/src/main/resources/seed/*.json
+**/__pycache__
+.env

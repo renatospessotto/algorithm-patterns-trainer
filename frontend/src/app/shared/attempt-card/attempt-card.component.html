@@ -1,0 +1,91 @@
+<mat-card class="slot-card" [class.slot-card--done]="stage === 'done'">
+  <mat-card-content>
+    <div class="slot-card__badges">
+      <span class="badge" [ngClass]="difficultyClass(problem.difficultyLabel)">
+        {{ problem.difficultyLabel }}
+      </span>
+      <span class="badge badge--origin" *ngIf="badgeLabel">
+        <mat-icon *ngIf="badgeIcon">{{ badgeIcon }}</mat-icon>
+        {{ badgeLabel }}
+      </span>
+      <span class="badge badge--urgency" *ngIf="urgency !== null">
+        urgência {{ urgency! | number: '1.2-2' }}
+      </span>
+    </div>
+
+    <h2 class="slot-card__title">{{ problem.title }}</h2>
+
+    <ng-container [ngSwitch]="stage">
+      <div *ngSwitchCase="'idle'">
+        <button mat-flat-button color="primary" (click)="open()">
+          <mat-icon>open_in_new</mat-icon>
+          Abrir no LeetCode
+        </button>
+        <button mat-button type="button" (click)="registerManually()">
+          Já resolvi, registrar sem cronômetro
+        </button>
+      </div>
+
+      <div *ngSwitchCase="'timing'">
+        <app-timer [startedAt]="startedAt" (finished)="onTimerFinished($event)"></app-timer>
+      </div>
+
+      <form *ngSwitchCase="'form'" [formGroup]="form" (ngSubmit)="submit()" class="attempt-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Tempo gasto (minutos)</mat-label>
+          <input matInput type="number" min="1" formControlName="minutes" />
+          <mat-hint *ngIf="elapsedSeconds">Cronômetro: {{ elapsedSeconds }}s</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Resultado</mat-label>
+          <mat-select formControlName="result">
+            <mat-option *ngFor="let opt of resultOptions" [value]="opt.value">{{ opt.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confiança (1-5, opcional)</mat-label>
+          <input matInput type="number" min="1" max="5" formControlName="confidence" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nota (opcional)</mat-label>
+          <textarea matInput formControlName="note" rows="2"></textarea>
+        </mat-form-field>
+
+        <p *ngIf="saveError" class="attempt-form__error" role="alert">
+          Não consegui salvar a tentativa. Confira se o backend está rodando e tente de novo.
+        </p>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || saving">
+          {{ saving ? 'Salvando...' : 'Registrar tentativa' }}
+        </button>
+      </form>
+
+      <div *ngSwitchCase="'done'" class="attempt-done">
+        <mat-icon class="attempt-done__icon">check_circle</mat-icon>
+        <div>
+          <ng-container *ngIf="liveResult; else fromHistory">
+            <p class="attempt-done__title">Registrado!</p>
+            <p class="attempt-done__detail">
+              Nova estabilidade: <strong>{{ liveResult.stabilityDays | number: '1.1-1' }} dias</strong>
+              · EMA de qualidade: <strong>{{ liveResult.emaQuality | number: '1.1-1' }}</strong>
+            </p>
+          </ng-container>
+          <ng-template #fromHistory>
+            <ng-container *ngIf="alreadyDone">
+              <p class="attempt-done__title">
+                Já resolvido hoje ({{ alreadyDone.attemptedAt | date: 'HH:mm' }})
+              </p>
+              <p class="attempt-done__detail" [ngClass]="resultClassFor(alreadyDone.result)">
+                {{ resultLabelFor(alreadyDone.result) }}
+              </p>
+              <app-clamped-note *ngIf="alreadyDone.note" [note]="alreadyDone.note"></app-clamped-note>
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+    </ng-container>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,10 @@
+<p class="clamped-note" [class.clamped-note--clamped]="!expanded">"{{ note }}"</p>
+<button
+  *ngIf="overflows"
+  type="button"
+  mat-button
+  class="clamped-note__toggle"
+  (click)="toggle()"
+>
+  {{ expanded ? 'Ver menos' : 'Ver mais' }}
+</button>

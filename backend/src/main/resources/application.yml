@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: app-leetcode
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/app_leetcode}
+    username: ${SPRING_DATASOURCE_USERNAME:app_leetcode}
+    password: ${SPRING_DATASOURCE_PASSWORD:app_leetcode}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+app:
+  # Fuso horário usado pra decidir "que dia é hoje" (avanço de current_day,
+  # heatmap de stats, corte de "resolvidos hoje"). Fixo em vez de depender do
+  # relógio/TZ do container: rodando em UTC (padrão da maioria das imagens
+  # Docker), uma tentativa feita à noite no horário do Brasil cai do lado
+  # errado da virada de dia em UTC, e tanto o heatmap quanto a lista de
+  # "resolvidos hoje" pareciam não atualizar. Ajuste aqui se você não estiver
+  # no fuso de Brasília.
+  timezone: ${APP_TIMEZONE:America/Sao_Paulo}
+  session:
+    difficulty-time-target-seconds:
+      easy: 720
+      medium: 1320
+      hard: 2280
+    difficulty-stability-cap-days:
+      easy: 90
+      medium: 45
+      hard: 20
+    pure-repetition-gap-by-week:
+      # semana (1-indexed) -> máximo de dias de aprendizado seguidos antes de forçar 1 dia de repetição pura
+      1: 1
+      2: 1
+      3: 2
+      4: 2
+      5: 3
+      6: 3
+      default: 4
+  papers:
+    semantic-scholar-base-url: https://api.semanticscholar.org/graph/v1/paper/search
+    cache-ttl-days: 14

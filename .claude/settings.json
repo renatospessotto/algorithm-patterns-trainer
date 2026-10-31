@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn test:*)",
+      "Bash(mvn -B test:*)",
+      "Bash(mvn -q test:*)",
+      "Bash(npx ng build:*)",
+      "Bash(python3 -m unittest:*)",
+      "Bash(python3 tools/etl/generate_seed.py:*)",
+      "Bash(scripts/seed.sh:*)",
+      "Bash(docker compose ps:*)",
+      "Bash(docker compose logs:*)",
+      "Bash(docker compose config:*)"
+    ],
+    "deny": [
+      "Bash(docker compose down -v:*)",
+      "Bash(docker volume rm:*)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}

@@ -1,0 +1,120 @@
+.slot-card {
+  transition: box-shadow 0.2s ease;
+
+  &--done {
+    --mdc-elevated-card-container-color: var(--color-success-soft);
+    border-color: transparent;
+  }
+
+  &__badges {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-3);
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-4);
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.difficulty--easy {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.difficulty--medium {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.difficulty--hard {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.badge--origin {
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  text-transform: none;
+}
+
+.badge--urgency {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  text-transform: none;
+}
+
+.attempt-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  &__error {
+    color: var(--color-danger);
+    margin: 0;
+  }
+}
+
+.attempt-done {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+
+  // sem isso, um filho de texto longo (a nota) força o flex item a crescer
+  // além da largura do card em vez de quebrar linha/truncar.
+  > div {
+    min-width: 0;
+  }
+
+  &__icon {
+    color: var(--color-success);
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-weight: 600;
+    margin: 0 0 0.125rem;
+  }
+
+  &__detail {
+    color: var(--color-text-muted);
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.result--good {
+  color: var(--color-success);
+}
+
+.result--ok {
+  color: var(--color-warning);
+}
+
+.result--bad {
+  color: var(--color-danger);
+}

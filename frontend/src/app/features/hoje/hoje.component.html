@@ -1,0 +1,78 @@
+<div class="hoje">
+  <header class="hoje__header">
+    <h1>Sessão de hoje</h1>
+    <div *ngIf="session" class="hoje__meta">
+      <span class="meta-pill">Dia {{ session.dayNumber }}</span>
+      <span class="meta-pill">{{ session.phase }}</span>
+      <span class="meta-pill meta-pill--accent">
+        {{ session.dayType === 'aprendizado' ? 'Dia de aprendizado' : 'Dia de repetição pura' }}
+      </span>
+    </div>
+  </header>
+
+  <div *ngIf="loading" class="hoje__loading">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+
+  <p *ngIf="error" class="hoje__error">
+    Não consegui carregar a sessão de hoje. Confira se o backend está rodando.
+  </p>
+
+  <ng-container *ngIf="session">
+    <section class="hoje__slots">
+      <app-attempt-card
+        *ngFor="let slot of session.slots; trackBy: trackByProblem"
+        [problem]="slot.problem"
+        [badgeLabel]="originLabel(slot.origin)"
+        [badgeIcon]="originIcon(slot.origin)"
+        [urgency]="slot.urgency"
+        [alreadyDone]="alreadyDoneFor(slot.problem.id)"
+        (recorded)="onRecorded($event)"
+      ></app-attempt-card>
+    </section>
+
+    <section class="hoje__review-bar" *ngIf="session.reviewBar.length">
+      <h2 class="hoje__section-title">
+        <mat-icon aria-hidden="true">history</mat-icon>
+        Quer revisar mais um pouco hoje?
+      </h2>
+      <p class="hoje__section-subtitle">Opcional -- não faz parte da sessão obrigatória do dia.</p>
+      <div class="hoje__slots">
+        <app-attempt-card
+          *ngFor="let slot of session.reviewBar; trackBy: trackByProblem"
+          [problem]="slot.problem"
+          badgeLabel="Revisão extra"
+          badgeIcon="history"
+          [urgency]="slot.urgency"
+          [alreadyDone]="alreadyDoneFor(slot.problem.id)"
+          (recorded)="onRecorded($event)"
+        ></app-attempt-card>
+      </div>
+    </section>
+
+    <section class="hoje__solved">
+      <h2 class="hoje__section-title">
+        <mat-icon aria-hidden="true">checklist</mat-icon>
+        Resolvidos hoje
+      </h2>
+      <p class="hoje__section-subtitle" *ngIf="!session.solvedToday.length">
+        Nada resolvido ainda hoje -- inclui também exercícios puxados em Explorar.
+      </p>
+      <mat-card class="solved-item" *ngFor="let item of session.solvedToday">
+        <mat-card-content>
+          <div class="solved-item__header">
+            <a [href]="item.leetcodeUrl" target="_blank" rel="noopener" class="solved-item__title">
+              {{ item.problemTitle }}
+            </a>
+            <span class="badge" [ngClass]="difficultyClass(item.difficultyLabel)">{{ item.difficultyLabel }}</span>
+          </div>
+          <div class="solved-item__meta">
+            <span>{{ formatTime(item.attemptedAt) }}</span>
+            <span [ngClass]="resultClass(item.result)">{{ resultLabel(item.result) }}</span>
+          </div>
+          <app-clamped-note *ngIf="item.note" [note]="item.note"></app-clamped-note>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </ng-container>
+</div>

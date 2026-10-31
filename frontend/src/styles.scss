@@ -1,0 +1,98 @@
+/* Design system do app (ver plano de redesign visual) -- tokens em CSS
+   custom properties, consumidos pelos componentes e por overrides pontuais
+   dos componentes do Angular Material. */
+:root {
+  --color-primary: #4f46e5;
+  --color-primary-dark: #3730a3;
+  --color-primary-soft: #eef2ff;
+
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-text-on-primary: #ffffff;
+
+  --color-success: #16a34a;
+  --color-success-soft: #dcfce7;
+  --color-warning: #d97706;
+  --color-warning-soft: #fef3c7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 1px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+::selection {
+  background: var(--color-primary-soft);
+}
+
+/* Skin próprio por cima do Angular Material -- em vez de recriar o tema M3
+   inteiro, sobrescreve as variáveis dos componentes usados (cores, raio,
+   sombra) pra tudo bater com a paleta acima. */
+.mat-mdc-card {
+  --mdc-elevated-card-container-shape: var(--radius-md);
+  --mdc-elevated-card-container-color: var(--color-surface);
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--color-border);
+}
+
+.mdc-button {
+  --mdc-shape-corner-family: rounded;
+  border-radius: var(--radius-sm) !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-filled-button-container-color: var(--color-primary);
+  --mdc-filled-button-label-text-color: var(--color-text-on-primary);
+}
+
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: var(--radius-sm);
+}
+
+.mat-mdc-select-panel,
+.mat-mdc-autocomplete-panel {
+  border-radius: var(--radius-md) !important;
+}

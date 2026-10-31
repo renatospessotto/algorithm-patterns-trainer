@@ -1,0 +1,138 @@
+.historico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.historico__subtitle {
+  margin: -0.5rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.historico__date-filter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-dark);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  font-size: 0.85rem;
+}
+
+.historico__filters {
+  mat-chip {
+    cursor: pointer;
+  }
+}
+
+.historico__chip--active {
+  background: var(--color-primary) !important;
+  color: var(--color-on-primary, #fff) !important;
+}
+
+.historico__loading {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6) 0;
+}
+
+.historico__error,
+.historico__empty {
+  color: var(--color-text-muted);
+}
+
+.historico__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.historico__item {
+  padding: var(--space-3) var(--space-4);
+}
+
+.historico__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.historico__title {
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.difficulty-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.difficulty--easy {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.difficulty--medium {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.difficulty--hard {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.historico__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.result--good {
+  color: var(--color-success);
+}
+
+.result--ok {
+  color: var(--color-warning);
+}
+
+.result--bad {
+  color: var(--color-danger);
+}
+
+.historico__note {
+  display: block;
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
